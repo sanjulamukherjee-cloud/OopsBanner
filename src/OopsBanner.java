@@ -1,90 +1,60 @@
-/**
- * UC7 - OOPS Banner App: Store Character Pattern in a Class
- *
- * Goal: Create a CharacterPatternMap class that encapsulates a character
- *       and its corresponding banner pattern, allowing retrieval and display
- *       of the "OOPS" banner using stored mappings.
- *
- * Key OOP Concepts:
- *  - Static inner class (CharacterPatternMap)
- *  - Constructor to initialize character + pattern
- *  - Getter methods (getCharacter, getPattern)
- *  - StringBuilder for efficient line building
- *  - Single Responsibility Principle
- */
-public class uc7{
 
-    // ─── Static Inner Class ────────────────────────────────────────────────────
-    static class CharacterPatternMap {
+import java.util.HashMap;
 
-        private char character;
-        private String[] pattern;
-
-        // Constructor: binds a character to its ASCII art pattern
-        public CharacterPatternMap(char character, String[] pattern) {
-            this.character = character;
-            this.pattern = pattern;
-        }
-
-        // Getter: returns the character this map represents
-        public char getCharacter() {
-            return character;
-        }
-
-        // Getter: returns the banner pattern (array of rows) for this character
-        public String[] getPattern() {
-            return pattern;
-        }
-    }
-    // ──────────────────────────────────────────────────────────────────────────
+public class uc8 {
 
     public static void main(String[] args) {
 
-        // Define each character and its ASCII art pattern
-        CharacterPatternMap charO = new CharacterPatternMap('O', new String[]{
-            "   ***  ",
-            " **   **",
-            "**     **",
-            "**     **",
-            "**     **",
-            " **   **",
-            "   ***  "
+        // Step 1: Create the pattern registry
+        HashMap<Character, String[]> patternMap = new HashMap<>();
+
+        // Step 2: Register each character — every row MUST be exactly 8 chars
+        patternMap.put('O', new String[]{
+            "  ****  ",   // row 0
+            "**    **",   // row 1
+            "**    **",   // row 2
+            "**    **",   // row 3
+            "**    **",   // row 4
+            "**    **",   // row 5
+            "  ****  "    // row 6
         });
 
-        CharacterPatternMap charP = new CharacterPatternMap('P', new String[]{
-            " *****  ",
-            " **   **",
-            "**    **",
-            "**  ***   ",
-            "**      ",
-            " **      ",
-            " **      "
+        patternMap.put('P', new String[]{
+            "******* ",   // row 0
+            "**    **",   // row 1
+            "**    **",   // row 2
+            "******* ",   // row 3
+            "**      ",   // row 4
+            "**      ",   // row 5
+            "**      "    // row 6
         });
 
-        CharacterPatternMap charS = new CharacterPatternMap('S', new String[]{
-            "  ***********  ",
-            " **    ",
-            "**     ",
-            " ***** ",
-            "      **",
-            " **   **",
-            "  ***  "
+        patternMap.put('S', new String[]{
+            "  ******",   // row 0
+            "**      ",   // row 1
+            "**      ",   // row 2
+            "  ****  ",   // row 3
+            "      **",   // row 4
+            "      **",   // row 5
+            "******  "    // row 6
         });
 
-        // Build the OOPS word using an array of CharacterPatternMap objects
-        CharacterPatternMap[] oops = { charO, charO, charP, charS };
+        // Step 3: Define the word to display
+        char[] word = { 'O', 'O', 'P', 'S' };
 
-        // Use StringBuilder to construct each row across all characters
-        int rows = charO.getPattern().length;
+        // Step 4: Render — loop through each row, build line with StringBuilder
+        int rows = 7;
 
         for (int row = 0; row < rows; row++) {
             StringBuilder line = new StringBuilder();
 
-            for (int col = 0; col < oops.length; col++) {
-                line.append(oops[col].getPattern()[row]);
+            for (int col = 0; col < word.length; col++) {
+                // O(1) HashMap lookup by character key
+                String[] pattern = patternMap.get(word[col]);
+                line.append(pattern[row]);
 
-                // Add spacing between letters (not after the last one)
-                if (col < oops.length - 1) {
+                // Three spaces between letters, nothing after last
+                if (col < word.length - 1) {
                     line.append("   ");
                 }
             }
